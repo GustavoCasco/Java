@@ -65,6 +65,10 @@ public class Tela extends JFrame {
 	private JTextField txtNomeNotas;
 	private JTextField txtCursoNotas;
 	private JTextField txtFaltas;
+	private JTextField txtRgmBoletim;
+	private JTextField txtNomeBoletim;
+	private JTextField txtFaltaBoletim;
+	private JTextField txtNotaBoletim;
 
 	/**
 	 * Launch the application.
@@ -367,7 +371,6 @@ public class Tela extends JFrame {
 					alunoDao = new AlunoDao();
 					alunoDao.salvar(aluno);
 					JOptionPane.showMessageDialog(null, "CADASTRADO COM SUCESSO!!!");
-					
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, "ERRO AO CADASTRAR UM ALUNO :: RGM JÁ CADASTRADO OU CAMPO EM BRANCO");
 				}
@@ -536,7 +539,7 @@ public class Tela extends JFrame {
 						});
 						
 					} catch (Exception e4) {
-						e4.printStackTrace();
+						JOptionPane.showMessageDialog(null, "ALUNO NÃO ENCONTRADO");
 					}
 					
 				}
@@ -568,7 +571,7 @@ public class Tela extends JFrame {
 		panelNotas.add(Semestre);
 		
 		JComboBox cbxSemestre = new JComboBox();
-		cbxSemestre.setModel(new DefaultComboBoxModel(new String[] {"Selecione um semestre"}));
+		cbxSemestre.setModel(new DefaultComboBoxModel(new String[] {"Selecione um semestre", "2020-1", "2020-2", "2021-1", "2021-2", "2022-1", "2022-2", "2023-1", "2023-2"}));
 		cbxSemestre.setBounds(93, 125, 164, 31);
 		panelNotas.add(cbxSemestre);
 		
@@ -624,33 +627,143 @@ public class Tela extends JFrame {
 			}
 		});
 		btnSalvar_1.setIcon(new ImageIcon(".\\Images\\icons8-crie-um-novo-64.png"));
-		btnSalvar_1.setBounds(36, 174, 82, 52);
+		btnSalvar_1.setBounds(153, 174, 122, 52);
 		panelNotas.add(btnSalvar_1);
 		
-		JButton btnAtualizar_1 = new JButton("");
-		btnAtualizar_1.setIcon(new ImageIcon(".\\Images\\icons8-update-60.png"));
-		btnAtualizar_1.setBounds(223, 174, 82, 52);
-		panelNotas.add(btnAtualizar_1);
-		
-		JButton btnLeitura_1 = new JButton("");
-		btnLeitura_1.setIcon(new ImageIcon(".\\Images\\icons8-leitura-48.png"));
-		btnLeitura_1.setBounds(128, 174, 82, 52);
-		panelNotas.add(btnLeitura_1);
-		
-		JButton btnExcluir_1 = new JButton("");
-		btnExcluir_1.setIcon(new ImageIcon(".\\Images\\icons8-remover-48.png"));
-		btnExcluir_1.setBounds(315, 174, 82, 52);
-		panelNotas.add(btnExcluir_1);
-		
-		JButton btnSair_1 = new JButton("");
-		btnSair_1.setIcon(new ImageIcon(".\\Images\\icons8-desligar-48.png"));
-		btnSair_1.setBounds(428, 174, 122, 52);
-		panelNotas.add(btnSair_1);
 		
 		JPanel panelBoletim = 		new JPanel();
 		tabbedPane.addTab("Boletim", null, panelBoletim, null);
+		panelBoletim.setLayout(null);
+		
+		JLabel lblRgmBoletim = new JLabel("RGM");
+		lblRgmBoletim.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblRgmBoletim.setBounds(10, 11, 37, 22);
+		panelBoletim.add(lblRgmBoletim);
 		
 		
+		JLabel lblNomeBoletim = new JLabel("Nome");
+		lblNomeBoletim.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblNomeBoletim.setBounds(267, 15, 46, 14);
+		panelBoletim.add(lblNomeBoletim);
+		
+		txtNomeBoletim = new JTextField();
+		txtNomeBoletim.setColumns(10);
+		txtNomeBoletim.setBounds(323, 11, 238, 20);
+		panelBoletim.add(txtNomeBoletim);
+		
+		JLabel lblCurso_1 = new JLabel("Curso");
+		lblCurso_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblCurso_1.setBounds(10, 51, 45, 22);
+		panelBoletim.add(lblCurso_1);
+		
+		JComboBox cbxCursoBoletim = new JComboBox();
+		extracted(cbxCursoBoletim);
+		cbxCursoBoletim.setBounds(91, 47, 468, 25);
+		panelBoletim.add(cbxCursoBoletim);
+		
+		JLabel lblDisciplina_1 = new JLabel("Disciplina");
+		lblDisciplina_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblDisciplina_1.setBounds(10, 85, 73, 22);
+		panelBoletim.add(lblDisciplina_1);
+		
+		JButton btnSair_1 = new JButton("");
+		btnSair_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtRgmNotas.setText(null);
+				txtNomeNotas.setText(null);
+				cbxDisciplina.setSelectedIndex(0);
+				cbxCurso.setSelectedIndex(0);
+				cbxNotas.setSelectedIndex(0);
+				cbxSemestre.setSelectedIndex(0);
+				txtFaltas.setText(null);
+				
+			}
+		});
+		btnSair_1.setIcon(new ImageIcon(".\\Images\\limpar-limpo.png"));
+		btnSair_1.setBounds(285, 174, 122, 52);
+		panelNotas.add(btnSair_1);
+		
+		JComboBox cbxDisciplinaBoletim = new JComboBox();
+		cbxDisciplinaBoletim.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtNotaBoletim.setText(null);
+				txtFaltaBoletim.setText(null);
+				
+				try {
+					alunoDao = new AlunoDao();
+					AlunoModel aluno = alunoDao.getByRgm(Integer.parseInt(txtRgmBoletim.getText()));
+					CursoXMateriaModel materia = (CursoXMateriaModel) cbxDisciplinaBoletim.getSelectedItem();
+					
+					boletimDao = new BoletimDao();
+					BoletimModel boletim = boletimDao.listaNotasFaltas(aluno.getIdAluno(), materia.getIdMateriaXCurso());
+					txtNotaBoletim.setText(boletim.getNotas().toString());
+					txtFaltaBoletim.setText(boletim.getFaltas().toString());
+					
+				} catch (Exception e2) {
+				}
+
+			}
+		});
+		extracted(cbxDisciplinaBoletim);
+		cbxDisciplinaBoletim.setBounds(93, 84, 468, 25);
+		panelBoletim.add(cbxDisciplinaBoletim);
+		
+		JLabel lblNota = new JLabel("Nota");
+		lblNota.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblNota.setBounds(248, 131, 45, 22);
+		panelBoletim.add(lblNota);
+		
+		JLabel lblFaltas_1 = new JLabel("Faltas");
+		lblFaltas_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblFaltas_1.setBounds(409, 131, 45, 22);
+		panelBoletim.add(lblFaltas_1);
+		
+		txtFaltaBoletim = new JTextField();
+		txtFaltaBoletim.setColumns(10);
+		txtFaltaBoletim.setBounds(464, 127, 97, 31);
+		panelBoletim.add(txtFaltaBoletim);
+		
+		txtNotaBoletim = new JTextField();
+		txtNotaBoletim.setColumns(10);
+		txtNotaBoletim.setBounds(302, 126, 97, 31);
+		panelBoletim.add(txtNotaBoletim);
+		
+		
+		txtRgmBoletim = new JTextField();
+		txtRgmBoletim.addCaretListener(new CaretListener() {
+			public void caretUpdate(CaretEvent e) {
+				
+				if (txtRgmBoletim.getText().toString().length() == 8 || txtRgmBoletim.getText().toString().length() == 10) {
+					AlunoModel aluno;
+					cbxCursoBoletim.removeAllItems();
+					extracted(cbxCursoBoletim);
+					cbxDisciplinaBoletim.removeAllItems();
+					txtNomeBoletim.setText(null);
+					extractedEmpty(cbxDisciplinaBoletim);
+					try {
+						alunoDao = new AlunoDao();
+						aluno = alunoDao.getByRgm(Integer.parseInt(txtRgmBoletim.getText()));
+						txtNomeBoletim.setText(aluno.getNome());
+						
+						dao.listarCurso().stream().forEach((c) -> {
+							if (aluno.getCurso().getIdCurso().equals(c.getIdCurso())) {
+								cbxCursoBoletim.addItem(c);
+							} 
+						});	
+						cbxCursoBoletim.setSelectedIndex(1);
+						
+						cursoxMateriaDao.listarCursoeMaterias(cbxCursoBoletim.getSelectedItem().toString()).stream().forEach((mc) -> {
+							cbxDisciplinaBoletim.addItem(mc);
+						});
+						
+					} catch (Exception e4) {
+						JOptionPane.showMessageDialog(null, "ALUNO NÃO ENCONTRADO");
+					}
+				}
+			}});
+		txtRgmBoletim.setBounds(91, 11, 166, 20);
+		panelBoletim.add(txtRgmBoletim);
+		txtRgmBoletim.setColumns(10);
 		
 		dao.listarCurso().stream().forEach((c) -> {
 			cbxCurso.addItem(c);

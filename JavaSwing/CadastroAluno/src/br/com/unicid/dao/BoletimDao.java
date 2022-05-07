@@ -2,10 +2,14 @@ package br.com.unicid.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import br.com.unicid.model.AlunoModel;
 import br.com.unicid.model.BoletimModel;
+import br.com.unicid.model.CampusModel;
+import br.com.unicid.model.CursoModel;
 import br.com.unicid.util.ConnectionFactory;
 
 public class BoletimDao {
@@ -21,6 +25,37 @@ public class BoletimDao {
 		
 	}
 
+	
+	
+	public BoletimModel listaNotasFaltas(int idAluno, int idMateriaXCurso) {
+		BoletimModel boletim = null;
+		try {
+			String sql = "select b.notas, b.faltas from boletim b\r\n"
+					+ "WHERE idAluno = ? and idMateriaXCurso = ?\r\n"
+					+ ";";
+			
+			try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+				pstm.setInt(1, idAluno);
+				pstm.setInt(2, idMateriaXCurso);
+				pstm.execute();
+				
+				try (ResultSet rst = pstm.getResultSet()) {
+					while (rst.next()) {
+						boletim = new BoletimModel();
+						boletim.setNotas(rst.getDouble(1));
+						boletim.setFaltas(rst.getInt(2));
+					}
+				}
+			}
+			return boletim;
+			
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
+	
 	public void salvar(BoletimModel boletim)  {	
 		try {
 			String sql = "INSERT INTO boletim(notas, faltas, idAluno, idMateriaXCurso) "
