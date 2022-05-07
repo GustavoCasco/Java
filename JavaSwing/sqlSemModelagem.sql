@@ -106,4 +106,9 @@ WHERE c.curso = 'ADS';
 SELECT * FROM aluno
 WHERE idAluno = 1;
 
-DELETE FROM boletim WHERE rgm=23451231
+DELETE FROM boletim WHERE idAluno = 2
+
+
+select b.notas, b.faltas from boletim b
+WHERE idAluno = 2 and idMateriaXCurso = 2
+;
