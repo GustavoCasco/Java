@@ -46,7 +46,7 @@ import br.com.unicid.model.EnderecoModel;
 import br.com.unicid.model.MateriaModel;
 import br.com.unicid.model.SemestreModel;
 
-public class Tela extends JFrame {
+public class Index extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtRGM;
@@ -77,7 +77,7 @@ public class Tela extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Tela frame = new Tela();
+					Index frame = new Index();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -92,7 +92,7 @@ public class Tela extends JFrame {
 	 * @throws ParseException
 	 */
 	@SuppressWarnings("rawtypes")
-	public Tela() throws ParseException {
+	public Index() throws ParseException {
 		CampusDao campus = new CampusDao();
 		CursoDao dao = new CursoDao();
 		CursoXMateriaDao cursoxMateriaDao = new CursoXMateriaDao();
@@ -676,8 +676,8 @@ public class Tela extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				txtRgmNotas.setText(null);
 				txtNomeNotas.setText(null);
+				txtCursoNotas.setText(null);
 				cbxDisciplina.setSelectedIndex(0);
-				cbxCurso.setSelectedIndex(0);
 				cbxNotas.setSelectedIndex(0);
 				cbxSemestre.setSelectedIndex(0);
 				txtFaltas.setText(null);
