@@ -1,4 +1,4 @@
-CREATE 	DATABASE cadastroAluno;
+CREATE DATABASE cadastroAluno;
 USE cadastroAluno;
 
 
@@ -64,8 +64,16 @@ FOREIGN KEY (idMateriaXCurso) REFERENCES materiaXcurso(idMateriaXCurso)
 
 INSERT INTO campus(nomeCampus) VALUES ("TATUAPE"), ("ANALIA FRANCO"), ("PAULISTA");
 INSERT INTO curso(curso, idCampus) values ("PSICOLOGIA", 1);
-INSERT INTO curso(curso, idCampus) values ("ADS", 2);
+INSERT INTO curso(curso, idCampus) values ("Analise e desenvolvimento de sistemas", 2);
 INSERT INTO curso(curso, idCampus) values ("Administração", 3);
+
 INSERT INTO semestre (semestre) VALUES ("1°Semestre"), ("2°Semestre"), ("3°Semestre"),("4°Semestre"),("5°Semestre"), ("6°Semestre");
-INSERT INTO materia(nomeMateria,idSemestre) VALUES  ("Psicanalise", 4);
+INSERT INTO materia(nomeMateria,idSemestre) VALUES  ("Banco de dados", 3), ("Tecnica de programação" , 3), ("Engenharia de software", 3);
+INSERT INTO materia(nomeMateria,idSemestre) VALUES  ("Psicanalise", 3);
+INSERT INTO materia(nomeMateria,idSemestre) VALUES  ("Matematica basica", 3);
+
+INSERT INTO materiaXcurso (idMateria, idCurso) VALUES (1, 2);
+INSERT INTO materiaXcurso (idMateria, idCurso) VALUES (2, 2);
+INSERT INTO materiaXcurso (idMateria, idCurso) VALUES (3, 2);
 INSERT INTO materiaXcurso (idMateria, idCurso) VALUES (4, 1);
+INSERT INTO materiaXcurso (idMateria, idCurso) VALUES (5, 3);
